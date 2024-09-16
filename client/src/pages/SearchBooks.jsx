@@ -9,7 +9,7 @@ import {
 } from 'react-bootstrap';
 import { useMutation, useLazyQuery } from '@apollo/client';
 import Auth from '../utils/auth';
-import { SEARCH_BOOKS, SAVE_BOOK } from '../mutations'; // Update with actual mutation/query names
+import { SEARCH_BOOKS, SAVE_BOOK } from '../utils/mutations';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 
 const SearchBooks = () => {

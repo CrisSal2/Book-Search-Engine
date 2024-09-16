@@ -29,6 +29,19 @@ export const ADD_USER = gql`
 `;
 
 
+export const SEARCH_BOOKS = gql`
+  query searchBooks($searchInput: String!) {
+    searchBooks(searchInput: $searchInput) {
+      bookId
+      title
+      authors
+      description
+      image
+    }
+  }
+`;
+
+
 export const SAVE_BOOK = gql`
   mutation saveBook($input: BookInput!) {
     saveBook(input: $input) {
