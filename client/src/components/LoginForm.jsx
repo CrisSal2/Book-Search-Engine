@@ -9,7 +9,7 @@ const LoginForm = () => {
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
-  // Initialize the useMutation hook with LOGIN_USER mutation
+  
   const [loginUser, { error }] = useMutation(LOGIN_USER);
 
   const handleInputChange = (event) => {
@@ -19,35 +19,37 @@ const LoginForm = () => {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-
-    // Check if form has everything (as per react-bootstrap docs)
+  
+    
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
+      return;
     }
-
+  
     try {
-      // Call the loginUser mutation
+      
       const { data } = await loginUser({
         variables: { email: userFormData.email, password: userFormData.password }
       });
-
-      // Handle successful login
+  
+      
       const { token, user } = data.loginUser;
       Auth.login(token);
-
+  
     } catch (err) {
       console.error(err);
       setShowAlert(true);
     }
-
-    // Clear the form
+  
+    
     setUserFormData({
       email: '',
       password: '',
     });
   };
+  
 
   return (
     <>
