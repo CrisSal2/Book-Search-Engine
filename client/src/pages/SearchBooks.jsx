@@ -12,15 +12,15 @@ import Auth from '../utils/auth';
 import { SEARCH_BOOKS, SAVE_BOOK } from '../utils/mutations';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 
-const SearchBooks = () => {
+function SearchBooks() {
   const [searchedBooks, setSearchedBooks] = useState([]);
   const [searchInput, setSearchInput] = useState('');
   const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
 
-  // Initialize useLazyQuery for searching books
+  
   const [searchBooks, { data: searchData, error: searchError }] = useLazyQuery(SEARCH_BOOKS);
   
-  // Initialize useMutation for saving books
+  
   const [saveBook] = useMutation(SAVE_BOOK);
 
   useEffect(() => {
@@ -65,10 +65,13 @@ const SearchBooks = () => {
     }
 
     try {
-      await saveBook({
+      const { data } = await saveBook({
         variables: { input: bookToSave },
       });
-      setSavedBookIds([...savedBookIds, bookToSave.bookId]);
+      
+      if (data) {
+        setSavedBookIds([...savedBookIds, bookToSave.bookId]);
+      }
     } catch (err) {
       console.error(err);
     }
@@ -139,4 +142,3 @@ const SearchBooks = () => {
 };
 
 export default SearchBooks;
-

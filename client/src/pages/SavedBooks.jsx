@@ -1,14 +1,11 @@
-import { useState, useEffect } from 'react';
 import { Container, Card, Button, Row, Col } from 'react-bootstrap';
 import { useQuery, useMutation } from '@apollo/client';
 import { GET_ME, REMOVE_BOOK } from '../utils/queries';
 import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
 
-const SavedBooks = () => {
-  const [userData, setUserData] = useState({});
-
-  // Fetch user data
+function SavedBooks() {
+  
   const { data, loading, error } = useQuery(GET_ME, {
     context: {
       headers: {
@@ -17,21 +14,18 @@ const SavedBooks = () => {
     },
   });
 
-  // Initialize mutation for removing books
+  
   const [removeBook] = useMutation(REMOVE_BOOK);
-
-  useEffect(() => {
-    if (data) {
-      setUserData(data.me);
-    }
-  }, [data]);
 
   const handleDeleteBook = async (bookId) => {
     try {
+      
       const { data } = await removeBook({ variables: { bookId } });
 
-      setUserData(data.removeBook); // Assuming this returns updated user data
-      removeBookId(bookId);
+      
+      if (data) {
+        removeBookId(bookId); // Remove book ID from localStorage
+      }
     } catch (err) {
       console.error(err);
     }
@@ -39,6 +33,9 @@ const SavedBooks = () => {
 
   if (loading) return <h2>LOADING...</h2>;
   if (error) return <h2>Error loading saved books!</h2>;
+
+  
+  const userData = data?.me || {};
 
   return (
     <>
